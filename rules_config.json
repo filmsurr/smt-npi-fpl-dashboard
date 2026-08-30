@@ -1,0 +1,102 @@
+{
+  "league": {
+    "league_id": 754393,
+    "display_name": "SMT NPI FPL",
+    "season": "2026-2027",
+    "github_repository": "https://github.com/filmsurr/smt-npi-fpl-dashboard.git"
+  },
+  "prize_system": {
+    "enabled": true,
+    "season_target_thb": 2750,
+    "max_prizes_per_manager": 2,
+    "keep_highest_value_prizes": true,
+    "pass_down_enabled": true,
+    "pass_down_max_category_rank": 2,
+    "equal_value_conflict_policy": "manual_review",
+    "prizes": [
+      {
+        "key": "season_1",
+        "label": "League Champion",
+        "icon": "🏆",
+        "amount_thb": 962.5,
+        "percent": 35,
+        "metric": "season_rank",
+        "target_rank": 1
+      },
+      {
+        "key": "season_2",
+        "label": "Runner-Up",
+        "icon": "🥈",
+        "amount_thb": 550,
+        "percent": 20,
+        "metric": "season_rank",
+        "target_rank": 2
+      },
+      {
+        "key": "season_3",
+        "label": "3rd Place",
+        "icon": "🥉",
+        "amount_thb": 412.5,
+        "percent": 15,
+        "metric": "season_rank",
+        "target_rank": 3
+      },
+      {
+        "key": "gw_mvp",
+        "label": "Most Weekly MVPs",
+        "icon": "⭐",
+        "amount_thb": 275,
+        "percent": 10,
+        "metric": "gw_mvp_wins",
+        "tie_breakers": ["season_total_points", "best_single_gw_points"]
+      },
+      {
+        "key": "team_value",
+        "label": "Highest Team Value",
+        "icon": "📈",
+        "amount_thb": 275,
+        "percent": 10,
+        "metric": "team_value",
+        "tie_breakers": []
+      },
+      {
+        "key": "captain",
+        "label": "Total Captain Points",
+        "icon": "©",
+        "amount_thb": 275,
+        "percent": 10,
+        "metric": "captain_points",
+        "tie_breakers": []
+      }
+    ]
+  },
+  "penalty_system": {
+    "enabled": true,
+    "season_target_thb": 2750,
+    "pool_formula": {
+      "type": "proportional_to_gameweeks",
+      "formula": "season_target_thb * gw_count / 38",
+      "rounding": "nearest_whole_thb"
+    },
+    "penalty_teams_by_gw_count": {
+      "2": null,
+      "3": 2,
+      "4": 2,
+      "5": 3,
+      "6": 3
+    },
+    "penalty_cutoff_tie_policy": "not_configured",
+    "schedule": [
+      {"month": "Aug", "year": 2026, "gw_count": 2},
+      {"month": "Sep", "year": 2026, "gw_count": 3},
+      {"month": "Oct", "year": 2026, "gw_count": 4},
+      {"month": "Nov", "year": 2026, "gw_count": 3},
+      {"month": "Dec", "year": 2026, "gw_count": 6},
+      {"month": "Jan", "year": 2027, "gw_count": 5},
+      {"month": "Feb", "year": 2027, "gw_count": 4},
+      {"month": "Mar", "year": 2027, "gw_count": 3},
+      {"month": "Apr", "year": 2027, "gw_count": 3},
+      {"month": "May", "year": 2027, "gw_count": 5}
+    ]
+  }
+}
