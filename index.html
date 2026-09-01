@@ -1,12 +1,204 @@
 <!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SMT NPI FPL Dashboard</title><style>
-:root{--bg:#061221;--glass:rgba(255,255,255,.06);--line:rgba(255,255,255,.1);--text:#f5f8ff;--muted:#94a3b8;--orange:#f1a455;--red:#ef6c75;--green:#49c987;--cyan:#56cbe8}*{box-sizing:border-box}body{margin:0;background:linear-gradient(145deg,#061221,#0a1b30);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.shell{max-width:1380px;margin:auto;padding:26px 18px 48px}.glass{background:var(--glass);border:1px solid var(--line);border-radius:18px;backdrop-filter:blur(16px)}h1{margin:0;font-size:42px}.sub{color:var(--muted);font-size:13px;margin-top:7px}.section{margin-top:22px}.title{font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:900;margin-bottom:10px}.hero{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{padding:16px}.label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}.big{font-size:28px;font-weight:950;margin-top:8px}.team{font-size:11px;color:var(--muted)}.table{overflow:auto}.table table{width:100%;border-collapse:collapse;min-width:900px}th,td{padding:11px 12px;border-bottom:1px solid rgba(255,255,255,.08);font-size:12px;text-align:right}th:first-child,td:first-child{text-align:left}th{color:var(--muted);font-size:10px;text-transform:uppercase}.red{color:var(--red);font-weight:900}.orange{color:var(--orange);font-weight:900}.green{color:var(--green);font-weight:900}.pill{display:inline-block;padding:5px 8px;border-radius:999px;background:rgba(241,164,85,.1);color:var(--orange);font-size:10px;font-weight:900}.pill.final{background:rgba(73,201,135,.1);color:var(--green)}.penaltyhead{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.audit{padding:13px;margin-top:10px;border:1px solid rgba(241,164,85,.25);background:rgba(241,164,85,.05);border-radius:14px}.controls{display:flex;gap:8px;align-items:center}.controls select{background:#102238;color:white;border:1px solid var(--line);border-radius:10px;padding:8px}.note{font-size:11px;color:var(--muted);margin-top:8px}@media(max-width:900px){.hero{grid-template-columns:repeat(2,1fr)}}@media(max-width:600px){.hero{grid-template-columns:1fr}.penaltyhead{flex-direction:column}}
+:root{--bg:#061221;--glass:rgba(255,255,255,.06);--line:rgba(255,255,255,.1);--text:#f5f8ff;--muted:#94a3b8;--orange:#f1a455;--red:#ef6c75;--green:#49c987;--cyan:#56cbe8}*{box-sizing:border-box}body{margin:0;background:linear-gradient(145deg,#061221,#0a1b30);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.shell{max-width:1380px;margin:auto;padding:26px 18px 48px}.glass{background:var(--glass);border:1px solid var(--line);border-radius:18px;backdrop-filter:blur(16px)}h1{margin:0;font-size:42px}.sub{color:var(--muted);font-size:13px;margin-top:7px}.section{margin-top:22px}.title{font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:900;margin-bottom:10px}.hero{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{padding:16px}.label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}.big{font-size:28px;font-weight:950;margin-top:8px}.team{font-size:11px;color:var(--muted)}.table{overflow:auto}.table table{width:100%;border-collapse:collapse;min-width:900px}th,td{padding:11px 12px;border-bottom:1px solid rgba(255,255,255,.08);font-size:12px;text-align:right}th:first-child,td:first-child{text-align:left}th{color:var(--muted);font-size:10px;text-transform:uppercase}.red{color:var(--red);font-weight:900}.orange{color:var(--orange);font-weight:900}.green{color:var(--green);font-weight:900}.cyan{color:var(--cyan);font-weight:900}.pill{display:inline-block;padding:5px 8px;border-radius:999px;background:rgba(241,164,85,.1);color:var(--orange);font-size:10px;font-weight:900}.pill.final{background:rgba(73,201,135,.1);color:var(--green)}.penaltyhead{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.audit{padding:13px;margin-top:10px;border:1px solid rgba(241,164,85,.25);background:rgba(241,164,85,.05);border-radius:14px}.controls{display:flex;gap:8px;align-items:center}.controls select{background:#102238;color:white;border:1px solid var(--line);border-radius:10px;padding:8px}.note{font-size:11px;color:var(--muted);margin-top:8px}.prizegrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.prizecard{padding:16px}.prizehead{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.prizeamt{font-size:11px;color:var(--orange);font-weight:900}.statusline{margin-top:11px;padding-top:10px;border-top:1px solid rgba(255,255,255,.08);font-size:11px}.status-direct{color:var(--green);font-weight:900}.status-pass{color:var(--muted);font-weight:900}.status-review{color:var(--orange);font-weight:900}.status-unallocated{color:var(--red);font-weight:900}.leadername{font-size:22px;font-weight:950;margin-top:10px}.metricvalue{font-size:25px;font-weight:950;color:var(--cyan);margin-top:8px}@media(max-width:900px){.hero{grid-template-columns:repeat(2,1fr)}.prizegrid{grid-template-columns:1fr}}@media(max-width:600px){.hero{grid-template-columns:1fr}.penaltyhead{flex-direction:column}}
 </style></head><body><div class="shell"><header><h1 id="league">SMT NPI FPL</h1><div class="sub" id="meta">League 754393</div></header><div id="error"></div><main id="main" hidden>
 <section class="section"><div class="title">League Position</div><div id="hero" class="hero"></div></section>
+
+<section class="section">
+  <div class="title">Prize Pool #4–#6</div>
+  <div class="sub">Special prize leaders from the latest completed Gameweek.</div>
+  <div id="specialPrizes" class="prizegrid" style="margin-top:10px"></div>
+</section>
+
 <section class="section"><div class="penaltyhead"><div><div class="title">Penalty Zone & Financial Management</div><div class="sub">Penalty score = official net FPL points after transfer-hit deductions</div></div><div class="controls"><label>Period <select id="month"></select></label></div></div><div id="penalty" class="glass card"></div></section>
-<section class="section"><div class="title">Monthly Penalty Setup · All Months</div><div class="sub">GW/month determines the number of Noop teams and the penalty amount for that month.</div><div class="glass table" style="margin-top:10px"><table><thead><tr><th>Month</th><th>FPL GWs</th><th>GW/month</th><th>Noop teams/month</th><th>Penalty/month</th><th>Status</th></tr></thead><tbody id="monthlySetup"></tbody></table></div></section>
+
+<section class="section">
+  <div class="title">Monthly Penalty Setup · All Months</div>
+  <div class="sub">GW/month determines the number of Noop teams and the penalty amount for that month.</div>
+  <div class="glass table" style="margin-top:10px">
+    <table>
+      <thead><tr><th>Month</th><th>FPL GWs</th><th>GW/month</th><th>Noop teams/month</th><th>Penalty/month</th><th>Status</th></tr></thead>
+      <tbody id="monthlySetup"></tbody>
+    </table>
+  </div>
+</section>
+
 <section class="section"><div class="title">Season Penalty Leaderboard</div><div class="glass table"><table><thead><tr><th>#</th><th>Manager</th><th>Times</th><th>Paid</th><th>Current est.</th></tr></thead><tbody id="ledger"></tbody></table></div></section>
 <section class="section"><div class="title">All-manager scoreboard</div><div class="glass table"><table><thead><tr><th>#</th><th>Manager</th><th>GW raw</th><th>GW net</th><th>Transfer hit</th><th>Total</th><th>Captain</th><th>MVP</th><th>Team value</th></tr></thead><tbody id="score"></tbody></table></div></section>
 <section class="section"><div class="title">Audit</div><div id="audit"></div></section>
 </main></div><script>window.FPL_DASHBOARD_DATA=null;</script><script src="dashboard_data.js"></script><script>
-(()=>{const D=window.FPL_DASHBOARD_DATA||{},$=x=>document.getElementById(x),n=v=>v==null?'—':Number(v).toLocaleString(),money=v=>`${n(v)} THB`,esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));if(D.status!=='ok'){$('error').innerHTML=`<div class="audit"><b>Dashboard data unavailable</b><div class="sub">${esc(D.error||'Run fpl_dashboard_updater.py')}</div></div>`;return}$('main').hidden=false;$('league').textContent=D.league.league_name;$('meta').textContent=`${D.league.season} · League ${D.league.league_id} · ${D.league.manager_count} managers · latest completed GW${D.latest_gw}`;const s=D.standings||[];$('hero').innerHTML=s.slice(0,3).map((r,i)=>`<div class="glass card"><div class="label">${['🏆 League 1st','🥈 League 2nd','🥉 League 3rd'][i]}</div><div class="big">${esc(r.manager_name)}</div><div class="team">${esc(r.team_name)}</div><div class="big">${n(r.total_points)} pts</div><div class="note">GW${D.latest_gw}: ${n(r.gw_points)} raw · ${n(r.net_gw_points)} net</div></div>`).join('')+`<div class="glass card"><div class="label">💰 Prize Pool Funding</div><div class="big green">${money(D.financial.collected_penalty_thb)}</div><div class="note">Projected current month: <span class="orange">+${money(D.financial.projected_current_period_thb)}</span></div><div class="note">Target: ${money(D.financial.season_target_thb)}</div></div>`;const periods=D.penalty_periods||[];const noopByGwCount={2:2,3:2,4:2,5:3,6:3};const gwCount=p=>Number(p.gw_count??((Number(p.end_gw)||0)-(Number(p.start_gw)||0)+1));const noopTeams=p=>{const configured=Number(p.penalty_teams);return Number.isFinite(configured)&&configured>0?configured:(noopByGwCount[gwCount(p)]??'—')};periods.forEach((p,i)=>$('month').insertAdjacentHTML('beforeend',`<option value="${i}">${p.month} ${p.year} · GW${p.start_gw}–${p.end_gw}</option>`));$('monthlySetup').innerHTML=periods.map(p=>{const count=gwCount(p),noop=noopTeams(p);let status='NOT STARTED',cls='';if(p.status==='finalized'){status='FINAL';cls='final'}else if(p.status==='projected'){status='PROJECTED'}else if(p.status==='tie_review'){status='REVIEW'}else if(p.status&&p.status!=='not_started'){status=String(p.status).replaceAll('_',' ').toUpperCase()}return `<tr><td><b>${esc(p.month)} ${p.year}</b></td><td>GW${n(p.start_gw)}–GW${n(p.end_gw)}</td><td><b>${n(count)}</b></td><td><b>${n(noop)}</b></td><td class="orange"><b>${money(p.penalty_pool_thb)}</b></td><td><span class="pill ${cls}">${esc(status)}</span></td></tr>`}).join('');let idx=periods.findIndex(p=>p.start_gw<=D.latest_gw&&D.latest_gw<=p.end_gw);if(idx<0)idx=Math.max(0,periods.length-1);$('month').value=idx;function renderPenalty(){const p=periods[Number($('month').value)]||{};if(p.status==='not_started'){$('penalty').innerHTML='<b>Not started</b>';return}if(p.status==='tie_review'){$('penalty').innerHTML=`<div class="audit"><b>Manual review required</b><div class="sub">${esc(p.reason)}</div></div>`;return}const rows=(p.entries||[]).map(x=>`<tr><td><b>${esc(x.manager_name)}</b><div class="team">${esc(x.team_name)}</div></td><td>${n(x.raw_points)}</td><td class="red">${x.transfer_hits?'-'+n(x.transfer_hits):'0'}</td><td><b>${n(x.monthly_points)}</b></td><td class="red">${n(x.monthly_penalty_gap)}</td><td class="orange">${money(x.penalty_thb)}</td></tr>`).join('');$('penalty').innerHTML=`<div class="penaltyhead"><div><b>${esc(p.month)} ${p.year} Penalty Zone</b><div class="sub">${esc(p.score_basis||'')}</div></div><span class="pill ${p.status==='finalized'?'final':''}">${p.status==='finalized'?'FINAL':'PROJECTED'} · ${noopTeams(p)} Noop teams · ${money(p.penalty_pool_thb)}</span></div><div class="table" style="margin-top:12px"><table><thead><tr><th>Manager</th><th>Raw pts</th><th>Transfer hits</th><th>Penalty score</th><th>Gap</th><th>${p.status==='finalized'?'Final':'Estimated'} pay</th></tr></thead><tbody>${rows}</tbody></table></div>`}$('month').onchange=renderPenalty;renderPenalty();const current=periods.find(p=>p.start_gw<=D.latest_gw&&D.latest_gw<=p.end_gw),est={};(current?.entries||[]).forEach(x=>est[x.manager_id]=x.penalty_thb);$('ledger').innerHTML=[...(D.penalty_ledger||[])].sort((a,b)=>b.total_penalty_paid_thb-a.total_penalty_paid_thb).map((x,i)=>`<tr><td>${i+1}</td><td>${esc(x.manager_name)}</td><td>${n(x.times_penalized)}</td><td>${money(x.total_penalty_paid_thb)}</td><td class="orange">${est[x.manager_id]?`+${money(est[x.manager_id])}`:'—'}</td></tr>`).join('');$('score').innerHTML=s.map(r=>`<tr><td>${r.league_rank}</td><td>${esc(r.manager_name)}</td><td>${n(r.gw_points)}</td><td>${n(r.net_gw_points)}</td><td class="red">${r.transfer_cost?'-'+n(r.transfer_cost):'0'}</td><td>${n(r.total_points)}</td><td>${n(r.captain_points_cumulative)}</td><td>${n(r.gw_mvp_wins_cumulative)}</td><td>£${Number(r.team_value).toFixed(1)}m</td></tr>`).join('');$('audit').innerHTML=(D.audit||[]).length?(D.audit||[]).map(a=>`<div class="audit"><b>${esc(a.code)}</b><div class="sub">${esc(a.message)}</div></div>`).join(''):'<div class="audit"><b class="green">No validation warnings</b></div>';$('audit').insertAdjacentHTML('beforeend',`<div class="audit"><b>Noop team rule</b><div class="sub">2 GW → 2 Noop teams · 3 GW → 2 · 4 GW → 2 · 5 GW → 3 · 6 GW → 3</div></div>`)})();
+(()=>{const D=window.FPL_DASHBOARD_DATA||{},$=x=>document.getElementById(x),n=v=>v==null?'—':Number(v).toLocaleString(),money=v=>v==null?'—':`${n(v)} THB`,esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+if(D.status!=='ok'){$('error').innerHTML=`<div class="audit"><b>Dashboard data unavailable</b><div class="sub">${esc(D.error||'Run fpl_dashboard_updater.py')}</div></div>`;return}
+$('main').hidden=false;
+$('league').textContent=D.league.league_name;
+$('meta').textContent=`${D.league.season} · League ${D.league.league_id} · ${D.league.manager_count} managers · latest completed GW${D.latest_gw}`;
+
+const s=D.standings||[];
+$('hero').innerHTML=s.slice(0,3).map((r,i)=>`<div class="glass card"><div class="label">${['🏆 League 1st','🥈 League 2nd','🥉 League 3rd'][i]}</div><div class="big">${esc(r.manager_name)}</div><div class="team">${esc(r.team_name)}</div><div class="big">${n(r.total_points)} pts</div><div class="note">GW${D.latest_gw}: ${n(r.gw_points)} raw · ${n(r.net_gw_points)} net</div></div>`).join('')+`<div class="glass card"><div class="label">💰 Prize Pool Funding</div><div class="big green">${money(D.financial.collected_penalty_thb)}</div><div class="note">Projected current month: <span class="orange">+${money(D.financial.projected_current_period_thb)}</span></div><div class="note">Target: ${money(D.financial.season_target_thb)}</div></div>`;
+
+// ---------- Prize Pool #4–#6 + max-2-prize allocation ----------
+const MAX_PRIZES_PER_MANAGER=2;
+const PASS_DOWN_LIMIT=2;
+
+// SMT NPI prize values. If dashboard_data.js exports prize values, those values override these fallbacks.
+const PRIZE_FALLBACK={1:962.5,2:687.5,3:275,4:275,5:275,6:275};
+const prizeDefs = D.prizes || D.prize_pools || D.rewards || [];
+const prizeAmount = (keys, fallbackNo) => {
+  const list = Array.isArray(prizeDefs) ? prizeDefs : Object.values(prizeDefs || {});
+  const found = list.find(p => {
+    const txt = `${p.key||''} ${p.id||''} ${p.name||''} ${p.label||''} ${p.title||''}`.toLowerCase();
+    return keys.some(k => txt.includes(k));
+  });
+  const v=found?.amount_thb ?? found?.prize_thb ?? found?.amount;
+  return v!=null?Number(v):PRIZE_FALLBACK[fallbackNo];
+};
+
+const metricRanking=(field)=>{
+  const rows=s.filter(r=>r[field]!=null);
+  return [...rows].sort((a,b)=>{
+    const dv=Number(b[field])-Number(a[field]);
+    if(dv!==0)return dv;
+    return Number(a.league_rank||999)-Number(b.league_rank||999);
+  });
+};
+
+// Prize #1–#3 are season-position prizes and establish the starting prize-slot count.
+const prizeCount={};
+s.slice(0,3).forEach(r=>{prizeCount[r.manager_id]=(prizeCount[r.manager_id]||0)+1});
+
+// #4–#6 use the actual SMT NPI category numbering.
+const special=[
+  {no:4,icon:'⭐',title:'Most Weekly MVPs',field:'gw_mvp_wins_cumulative',unit:'MVP',amount:prizeAmount(['mvp','weekly mvp'],4)},
+  {no:5,icon:'💰',title:'Highest Team Value',field:'team_value',unit:'£m',amount:prizeAmount(['team value','value'],5)},
+  {no:6,icon:'©',title:'Total Captain Points',field:'captain_points_cumulative',unit:'pts',amount:prizeAmount(['captain'],6)}
+];
+
+// Work out which equal-value categories compete for a manager's remaining slots.
+// A manager with only one slot left but leading 2+ same-value special prizes needs manual review.
+const leaderGroups={};
+special.forEach(p=>{
+  p.ranking=metricRanking(p.field);
+  p.leader=p.ranking[0]||null;
+  p.runner=p.ranking[1]||null;
+  p.topTie=!!(p.leader&&p.runner&&Number(p.leader[p.field])===Number(p.runner[p.field]));
+  if(p.leader){
+    const key=`${p.leader.manager_id}|${Number(p.amount)}`;
+    (leaderGroups[key] ||= []).push(p);
+  }
+});
+
+special.forEach(p=>{
+  const leader=p.leader;
+  if(!leader){
+    p.allocation={status:'unallocated',owner:null,reason:'No metric data available.'};
+    return;
+  }
+  if(p.topTie){
+    p.allocation={status:'review',owner:null,reason:'Top metric is tied. Manual review required.'};
+    return;
+  }
+
+  const current=prizeCount[leader.manager_id]||0;
+  const remaining=Math.max(0,MAX_PRIZES_PER_MANAGER-current);
+  const sameValueLeads=leaderGroups[`${leader.manager_id}|${Number(p.amount)}`]||[];
+
+  // If there are more equal-value prizes than remaining slots, do not arbitrarily choose one.
+  if(remaining>0 && sameValueLeads.length>remaining){
+    p.allocation={
+      status:'review',
+      owner:null,
+      reason:`${esc(leader.manager_name)} has ${remaining} prize slot${remaining===1?'':'s'} left but leads ${sameValueLeads.length} equal-value prizes (${money(p.amount)} each). Choose which prize(s) to keep, then pass the others down.`
+    };
+    return;
+  }
+
+  if(current<MAX_PRIZES_PER_MANAGER){
+    p.allocation={status:'direct',owner:leader,reason:`Metric leader is eligible (${current+1}/${MAX_PRIZES_PER_MANAGER} prize slots).`};
+    prizeCount[leader.manager_id]=current+1;
+    return;
+  }
+
+  // Leader already has two higher/retained prizes: pass down only to #2.
+  const runner=p.runner;
+  if(runner && (prizeCount[runner.manager_id]||0)<MAX_PRIZES_PER_MANAGER){
+    p.allocation={
+      status:'pass_down',
+      owner:runner,
+      reason:`↘ Pass-down: ${esc(leader.manager_name)} already has ${MAX_PRIZES_PER_MANAGER}/${MAX_PRIZES_PER_MANAGER} prizes.`
+    };
+    prizeCount[runner.manager_id]=(prizeCount[runner.manager_id]||0)+1;
+  }else{
+    p.allocation={
+      status:'unallocated',
+      owner:null,
+      reason:runner
+        ? `Leader and category #2 candidate have reached the ${MAX_PRIZES_PER_MANAGER}-prize limit. Pass-down stops at #${PASS_DOWN_LIMIT}.`
+        : 'No #2 candidate is available for pass-down.'
+    };
+  }
+});
+
+$('specialPrizes').innerHTML=special.map(p=>{
+  const r=p.leader,a=p.allocation;
+  let metric='—';
+  if(r){
+    metric=p.unit==='£m'?`£${Number(r[p.field]).toFixed(1)}m`:`${n(r[p.field])} ${p.unit}`;
+  }
+  const owner=a.owner?esc(a.owner.manager_name):(a.status==='review'?'MANUAL REVIEW':'UNALLOCATED');
+  const statusClass=a.status==='direct'?'status-direct':a.status==='pass_down'?'status-pass':a.status==='review'?'status-review':'status-unallocated';
+  const statusLabel=a.status==='direct'?'DIRECT':a.status==='pass_down'?'↘ PASS-DOWN':a.status==='review'?'⚠ REVIEW':'UNALLOCATED';
+
+  return `<div class="glass prizecard">
+    <div class="prizehead">
+      <div class="label">Prize Pool #${p.no} · ${p.icon} ${esc(p.title)}</div>
+      <div class="prizeamt">${money(p.amount)}</div>
+    </div>
+    <div class="leadername">${r?esc(r.manager_name):'—'}</div>
+    <div class="team">${r?esc(r.team_name):''}</div>
+    <div class="metricvalue">${metric}</div>
+    <div class="note">Metric leader after GW${D.latest_gw}</div>
+    <div class="statusline">
+      <div>Projected prize owner: <b>${owner}</b></div>
+      <div class="${statusClass}" style="margin-top:5px">${statusLabel}</div>
+      <div class="note">${a.reason}</div>
+    </div>
+  </div>`;
+}).join('');
+
+// Make the max-two rule visible in the audit area later.
+const specialAllocationAudit=special.map(p=>({
+  code:`Prize #${p.no} ${p.allocation.status.toUpperCase()}`,
+  message:`${p.title}: ${p.allocation.owner?p.allocation.owner.manager_name:'—'} · ${p.allocation.reason}`
+}));
+
+// ---------- Penalty periods + visible all-month setup ----------
+const periods=D.penalty_periods||[];
+const noopByGwCount={2:2,3:2,4:2,5:3,6:3};
+const gwCount=p=>Number(p.gw_count ?? ((Number(p.end_gw)||0)-(Number(p.start_gw)||0)+1));
+const noopTeams=p=>{
+  const configured=Number(p.penalty_teams);
+  return Number.isFinite(configured)&&configured>0?configured:(noopByGwCount[gwCount(p)]??'—');
+};
+periods.forEach((p,i)=>$('month').insertAdjacentHTML('beforeend',`<option value="${i}">${p.month} ${p.year} · GW${p.start_gw}–${p.end_gw}</option>`));
+$('monthlySetup').innerHTML=periods.map(p=>{
+  const count=gwCount(p),noop=noopTeams(p);
+  let status='Not started',cls='';
+  if(p.status==='finalized'){status='FINAL';cls='final'}
+  else if(p.status==='projected'){status='PROJECTED'}
+  else if(p.status==='tie_review'){status='REVIEW'}
+  else if(p.status && p.status!=='not_started'){status=String(p.status).replaceAll('_',' ').toUpperCase()}
+  return `<tr><td><b>${esc(p.month)} ${p.year}</b></td><td>GW${n(p.start_gw)}–GW${n(p.end_gw)}</td><td><b>${n(count)}</b></td><td><b>${n(noop)}</b></td><td class="orange"><b>${money(p.penalty_pool_thb)}</b></td><td><span class="pill ${cls}">${esc(status)}</span></td></tr>`;
+}).join('');
+
+let idx=periods.findIndex(p=>p.start_gw<=D.latest_gw&&D.latest_gw<=p.end_gw);if(idx<0)idx=Math.max(0,periods.length-1);$('month').value=idx;
+function renderPenalty(){const p=periods[Number($('month').value)]||{};if(p.status==='not_started'){$('penalty').innerHTML='<b>Not started</b>';return}if(p.status==='tie_review'){$('penalty').innerHTML=`<div class="audit"><b>Manual review required</b><div class="sub">${esc(p.reason)}</div></div>`;return}const rows=(p.entries||[]).map(x=>`<tr><td><b>${esc(x.manager_name)}</b><div class="team">${esc(x.team_name)}</div></td><td>${n(x.raw_points)}</td><td class="red">${x.transfer_hits?'-'+n(x.transfer_hits):'0'}</td><td><b>${n(x.monthly_points)}</b></td><td class="red">${n(x.monthly_penalty_gap)}</td><td class="orange">${money(x.penalty_thb)}</td></tr>`).join('');$('penalty').innerHTML=`<div class="penaltyhead"><div><b>${esc(p.month)} ${p.year} Penalty Zone</b><div class="sub">${esc(p.score_basis||'')}</div></div><span class="pill ${p.status==='finalized'?'final':''}">${p.status==='finalized'?'FINAL':'PROJECTED'} · ${noopTeams(p)} Noop teams · ${money(p.penalty_pool_thb)}</span></div><div class="table" style="margin-top:12px"><table><thead><tr><th>Manager</th><th>Raw pts</th><th>Transfer hits</th><th>Penalty score</th><th>Gap</th><th>${p.status==='finalized'?'Final':'Estimated'} pay</th></tr></thead><tbody>${rows}</tbody></table></div>`}
+$('month').onchange=renderPenalty;renderPenalty();
+
+const current=periods.find(p=>p.start_gw<=D.latest_gw&&D.latest_gw<=p.end_gw),est={};(current?.entries||[]).forEach(x=>est[x.manager_id]=x.penalty_thb);
+$('ledger').innerHTML=[...(D.penalty_ledger||[])].sort((a,b)=>b.total_penalty_paid_thb-a.total_penalty_paid_thb).map((x,i)=>`<tr><td>${i+1}</td><td>${esc(x.manager_name)}</td><td>${n(x.times_penalized)}</td><td>${money(x.total_penalty_paid_thb)}</td><td class="orange">${est[x.manager_id]?`+${money(est[x.manager_id])}`:'—'}</td></tr>`).join('');
+$('score').innerHTML=s.map(r=>`<tr><td>${r.league_rank}</td><td>${esc(r.manager_name)}</td><td>${n(r.gw_points)}</td><td>${n(r.net_gw_points)}</td><td class="red">${r.transfer_cost?'-'+n(r.transfer_cost):'0'}</td><td>${n(r.total_points)}</td><td>${n(r.captain_points_cumulative)}</td><td>${n(r.gw_mvp_wins_cumulative)}</td><td>£${Number(r.team_value).toFixed(1)}m</td></tr>`).join('');
+$('audit').innerHTML=(D.audit||[]).length?(D.audit||[]).map(a=>`<div class="audit"><b>${esc(a.code)}</b><div class="sub">${esc(a.message)}</div></div>`).join(''):'<div class="audit"><b class="green">No validation warnings</b></div>';
+$('audit').insertAdjacentHTML('beforeend',`<div class="audit"><b>Prize allocation rule</b><div class="sub">Maximum 2 prizes per manager. Higher-value prizes are retained first. Pass-down stops at category #2. If equal-value prizes compete for fewer remaining slots, the dashboard marks MANUAL REVIEW instead of choosing arbitrarily.</div></div>`);
+specialAllocationAudit.forEach(a=>$('audit').insertAdjacentHTML('beforeend',`<div class="audit"><b>${esc(a.code)}</b><div class="sub">${esc(a.message)}</div></div>`));
+$('audit').insertAdjacentHTML('beforeend',`<div class="audit"><b>Noop team rule</b><div class="sub">2 GW → 2 Noop teams · 3 GW → 2 · 4 GW → 2 · 5 GW → 3 · 6 GW → 3</div></div>`)
+})();
 </script></body></html>
