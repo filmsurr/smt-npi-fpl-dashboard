@@ -3,7 +3,8 @@
     "league_id": 754393,
     "display_name": "SMT NPI FPL",
     "season": "2026-2027",
-    "github_repository": "https://github.com/filmsurr/smt-npi-fpl-dashboard.git"
+    "github_repository": "https://github.com/filmsurr/smt-npi-fpl-dashboard.git",
+    "pages_url": "https://filmsurr.github.io/smt-npi-fpl-dashboard/"
   },
   "prize_system": {
     "enabled": true,
@@ -48,7 +49,10 @@
         "amount_thb": 275,
         "percent": 10,
         "metric": "gw_mvp_wins",
-        "tie_breakers": ["season_total_points", "best_single_gw_points"]
+        "tie_breakers": [
+          "season_total_points",
+          "best_single_gw_points"
+        ]
       },
       {
         "key": "team_value",
@@ -79,24 +83,65 @@
       "rounding": "nearest_whole_thb"
     },
     "penalty_teams_by_gw_count": {
-      "2": null,
+      "2": 2,
       "3": 2,
       "4": 2,
       "5": 3,
       "6": 3
     },
-    "penalty_cutoff_tie_policy": "not_configured",
+    "penalty_cutoff_tie_policy": "manual_review",
+    "score_basis": "official_net_points_after_transfer_hits",
     "schedule": [
-      {"month": "Aug", "year": 2026, "gw_count": 2},
-      {"month": "Sep", "year": 2026, "gw_count": 3},
-      {"month": "Oct", "year": 2026, "gw_count": 4},
-      {"month": "Nov", "year": 2026, "gw_count": 3},
-      {"month": "Dec", "year": 2026, "gw_count": 6},
-      {"month": "Jan", "year": 2027, "gw_count": 5},
-      {"month": "Feb", "year": 2027, "gw_count": 4},
-      {"month": "Mar", "year": 2027, "gw_count": 3},
-      {"month": "Apr", "year": 2027, "gw_count": 3},
-      {"month": "May", "year": 2027, "gw_count": 5}
+      {
+        "month": "Aug",
+        "year": 2026,
+        "gw_count": 2
+      },
+      {
+        "month": "Sep",
+        "year": 2026,
+        "gw_count": 3
+      },
+      {
+        "month": "Oct",
+        "year": 2026,
+        "gw_count": 4
+      },
+      {
+        "month": "Nov",
+        "year": 2026,
+        "gw_count": 3
+      },
+      {
+        "month": "Dec",
+        "year": 2026,
+        "gw_count": 6
+      },
+      {
+        "month": "Jan",
+        "year": 2027,
+        "gw_count": 5
+      },
+      {
+        "month": "Feb",
+        "year": 2027,
+        "gw_count": 4
+      },
+      {
+        "month": "Mar",
+        "year": 2027,
+        "gw_count": 3
+      },
+      {
+        "month": "Apr",
+        "year": 2027,
+        "gw_count": 3
+      },
+      {
+        "month": "May",
+        "year": 2027,
+        "gw_count": 5
+      }
     ]
   }
 }
