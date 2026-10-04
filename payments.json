@@ -1,0 +1,23 @@
+{
+  "penalties": [
+    {
+      "manager_id": 3770940,
+      "month": "Aug",
+      "year": 2026,
+      "amount_thb": 86.65,
+      "date": null,
+      "recorded_on": "2026-10-04",
+      "note": "August penalty paid in full; confirmed by Film. Payment date not supplied."
+    },
+    {
+      "manager_id": 3770922,
+      "month": "Aug",
+      "year": 2026,
+      "amount_thb": 58.35,
+      "date": null,
+      "recorded_on": "2026-10-04",
+      "note": "August penalty paid in full; confirmed by Film. Payment date not supplied."
+    }
+  ],
+  "prizes": []
+}
