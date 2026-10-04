@@ -12,7 +12,7 @@
     "max_prizes_per_manager": 2,
     "keep_highest_value_prizes": true,
     "pass_down_enabled": true,
-    "pass_down_max_category_rank": 2,
+    "pass_down_max_category_rank": null,
     "equal_value_conflict_policy": "manual_review",
     "prizes": [
       {
@@ -89,7 +89,7 @@
       "5": 3,
       "6": 3
     },
-    "penalty_cutoff_tie_policy": "manual_review",
+    "penalty_cutoff_tie_policy": "share_occupied_slot_amounts",
     "score_basis": "official_net_points_after_transfer_hits",
     "schedule": [
       {

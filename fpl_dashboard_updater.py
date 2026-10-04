@@ -47,7 +47,7 @@ SCHEDULE=normalize_schedule()
 def get_bootstrap():
     d=api_get('/bootstrap-static/')
     names={x['id']:x.get('web_name') or f"Player {x['id']}" for x in d.get('elements',[])}
-    finished=[e['id'] for e in d.get('events',[]) if e.get('finished')]
+    finished=[e['id'] for e in d.get('events',[]) if e.get('finished') and e.get('data_checked') is True]
     return names,(max(finished) if finished else 0)
 
 def get_league():
@@ -93,6 +93,25 @@ def get_captains(managers,latest,names):
             except Exception as e: print('  captain warning:',m['manager_name'],gw,e)
     return out
 
+def tied_slot_payments(ranking, slots, pool, score_key):
+    """Share money for occupied lowest-score slots across the entire tied group."""
+    ordered=sorted(ranking, key=lambda row: row[score_key])
+    top=max((row[score_key] for row in ordered), default=0)
+    weights=[max(0,top-row[score_key]) for row in ordered[:slots]]
+    total=sum(weights)
+    amounts=[pool*w/total if total else pool/max(1,len(weights)) for w in weights]
+    selected=[]; shares=[]; pos=0
+    while pos<len(ordered):
+        end=pos+1
+        while end<len(ordered) and ordered[end][score_key]==ordered[pos][score_key]: end+=1
+        if pos<slots:
+            amount=sum(amounts[pos:min(end,slots)])/(end-pos)
+            selected.extend(ordered[pos:end]); shares.extend([amount]*(end-pos))
+        pos=end
+    if selected and abs(sum(shares)-pool)>1e-7: raise ValueError('Penalty money conservation failed')
+    return selected,shares
+
+
 def exact_split(pool,rows):
     total=sum(max(0,r['monthly_penalty_gap']) for r in rows)
     if total<=0:return [0]*len(rows)
@@ -108,13 +127,9 @@ def build_penalty_period(history,managers,latest,p):
         if p['start_gw']<=r['gw']<=through:
             a=agg[r['manager_id']]; a['raw_points']+=r['gw_points']; a['transfer_hits']+=r['transfer_cost']; a['monthly_points']+=r['net_gw_points']; a['score_adjustment']+=r['score_adjustment']
     ranked=sorted(agg.values(),key=lambda x:(x['monthly_points'],x['manager_name']),reverse=True); top=ranked[0]['monthly_points'] if ranked else 0
-    n=min(p['penalty_teams'],len(ranked)); bottom=sorted(ranked,key=lambda x:(x['monthly_points'],x['manager_name']))[:n]
-    if len(ranked)>n and n>0:
-        cutoff=bottom[-1]['monthly_points']; next_score=sorted(ranked,key=lambda x:(x['monthly_points'],x['manager_name']))[n]['monthly_points']
-        if cutoff==next_score:
-            return {'status':'tie_review','reason':'Penalty cutoff is tied; league rule requires manual review.','top_score':top,'entries':[],**p}
+    n=min(p['penalty_teams'],len(ranked))
+    bottom,pays=tied_slot_payments(ranked,n,p['penalty_pool_thb'],'monthly_points')
     for r in bottom:r['monthly_penalty_gap']=max(0,top-r['monthly_points'])
-    pays=exact_split(p['penalty_pool_thb'],bottom)
     for r,pay in zip(bottom,pays):r['penalty_thb']=pay
     bottom.sort(key=lambda x:(x['penalty_thb'],x['monthly_penalty_gap']),reverse=True)
     status='finalized' if latest>=p['end_gw'] else 'projected'
@@ -152,12 +167,47 @@ def build_data(meta,managers,history,caps,latest):
         audits.append({'level':'warn','code':'PENALTY_ROUNDING_VARIANCE','message':f"Monthly rounded penalty pools total {pools} THB vs {CONFIG['penalty_system']['season_target_thb']} THB target ({pools-CONFIG['penalty_system']['season_target_thb']:+} THB)."})
     return {'status':'ok','version':'2.1-penalty-fix','updated_at':datetime.now(timezone.utc).isoformat(),'latest_gw':latest,'league':{'league_id':LEAGUE_ID,'league_name':meta.get('name') or CONFIG['league']['display_name'],'display_name':CONFIG['league']['display_name'],'season':CONFIG['league']['season'],'manager_count':len(managers)},'standings':standings,'penalty_periods':periods,'penalty_ledger':list(ledger.values()),'financial':{'season_target_thb':CONFIG['penalty_system']['season_target_thb'],'collected_penalty_thb':finalized,'projected_current_period_thb':projected,'remaining_thb':max(0,CONFIG['penalty_system']['season_target_thb']-finalized)},'audit':audits,'rules':CONFIG}
 
+def preserve_history_guard(history, latest):
+    path=ROOT/'dashboard_data.js'
+    if not path.exists(): return
+    match=re.search(r'=\s*(\{.*\})\s*;?\s*$',path.read_text(encoding='utf-8'),re.S)
+    if not match: raise ValueError('Existing snapshot is unreadable; refusing replacement')
+    old=json.loads(match.group(1))
+    if latest<old.get('latest_gw',0): raise ValueError('API Gameweek regressed; existing snapshot preserved')
+    keys={(h['manager_id'],h['gw']) for h in history}
+    if any((h['manager_id'],h['gw']) not in keys for h in old.get('history',[])):
+        raise ValueError('Historical row disappeared; existing snapshot preserved')
+
+
+def validate_history(managers, history, latest):
+    preserve_history_guard(history,latest)
+    ids=[m['manager_id'] for m in managers]
+    if not ids or len(set(ids)) != len(ids): raise ValueError('Empty or duplicate managers')
+    for mid in ids:
+        rows=[h for h in history if h['manager_id']==mid]
+        if sorted(h['gw'] for h in rows)!=list(range(1,latest+1)):
+            raise ValueError(f'Missing or duplicate Gameweeks for entry {mid}; previous snapshot preserved')
+        if any(h['transfer_cost']<0 or h['transfer_cost']%4 for h in rows):
+            raise ValueError('Invalid transfer cost')
+
+
 def main():
     print('='*68);print('SMT NPI FPL Dashboard updater v2.1 — penalty fix');print('League',LEAGUE_ID);print('='*68)
     try:
         names,latest=get_bootstrap(); meta,managers=get_league(); print(f"Managers: {len(managers)} | Latest completed: GW{latest}")
-        history=get_histories(managers,latest); caps=get_captains(managers,latest,names); data=build_data(meta,managers,history,caps,latest)
-        DATA.write_text('window.FPL_DASHBOARD_DATA = '+json.dumps(data,ensure_ascii=False,separators=(',',':'))+';\n',encoding='utf-8')
+        history=get_histories(managers,latest)
+        validate_history(managers,history,latest)
+        caps=get_captains(managers,latest,names); data=build_data(meta,managers,history,caps,latest)
+        data['legacy_financial_semantics']='assessed_not_payment_receipts'; data['history']=history; data['captain_history']=caps
+        old_text=DATA.read_text(encoding='utf-8') if DATA.exists() else ''
+        match=re.search(r'=\s*(\{.*\})\s*;?\s*$',old_text,re.S)
+        old=json.loads(match.group(1)) if match else None
+        comparable=dict(data); comparable.pop('updated_at',None)
+        if old: old.pop('updated_at',None)
+        if comparable!=old:
+            temp=DATA.with_suffix('.tmp')
+            temp.write_text('window.FPL_DASHBOARD_DATA = '+json.dumps(data,ensure_ascii=False,separators=(',',':'))+';\n',encoding='utf-8')
+            temp.replace(DATA)
         print('SUCCESS: dashboard_data.js updated');return 0
     except Exception as e:
         print('ERROR:',e);return 1

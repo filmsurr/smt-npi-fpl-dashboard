@@ -11,3 +11,9 @@ Monthly pool is `round(2750 × gw_count / 38)`: 2→145, 3→217, 4→289, 5→3
 Monthly penalty score uses **official net FPL points after transfer hits**. The updater calculates each GW's net contribution from the change in `total_points`, while showing `event_transfers_cost` separately. Example: raw 72, hit 4 → net penalty score 68.
 
 Penalty payment is weighted by score gap from the monthly leader. A tied cutoff is marked for manual review.
+
+## Current calculation policy (supersedes earlier cutoff/pass-down wording)
+
+Penalty ties share the sum of occupied slot amounts equally across all tied managers, including ties across the cutoff. The configured gap-weighted pool formula is preserved. The engine uses full precision and formats THB to 2 decimals. Prize pass-down continues until an eligible winner is found, with configured prize tiebreaks and equal-value conflict policy.
+
+Finalized penalties are assessments, not payment receipts. Only payments.json entries establish paid money or finalized prize awards. Legacy snapshot totals remain preserved for audit but are not treated as receipts.
