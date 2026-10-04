@@ -5,7 +5,6 @@ try{const config=await fetch('./rules_config.json').then(r=>{if(!r.ok)throw Erro
 if(!d||d.status!=='ok')throw Error(d?.error||'Snapshot unavailable. Run python3 fpl_dashboard_updater.py');
 const a=FPLEngine.build(d,config,payments);window.dashboardAnalytics=a;document.title=a.c.name+' • FPL';$('brand').textContent=a.c.name;
 const age=(Date.now()-Date.parse(a.updated))/86400000;if(age>7)a.warnings.push(`Snapshot is ${Math.floor(age)} days old; run the manual updater.`);
-a.warnings.push(`League identity check: repository uses ID ${a.c.id}; earlier project notes listed the leagues in reverse. Confirm before changing IDs.`);
 $('meta').textContent=`${a.c.season} · Latest API snapshot GW${a.latest} · League ${a.c.id} · Updated ${new Date(a.updated).toLocaleString()} · ${a.warnings.length?'DATA WARNING':'Snapshot loaded'}`;
 $('warnings').innerHTML=a.warnings.length?`<details class="warning" open><summary>DATA WARNING • ${a.warnings.length} checks need attention</summary>${a.warnings.map(w=>`<p>${esc(w)}</p>`).join('')}</details>`:'';
 $('main').hidden=false;
